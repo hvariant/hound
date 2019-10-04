@@ -675,14 +675,37 @@ var FilesView = createReactClass({
         );
       });
 
+      var fileBodyRef = React.createRef();
+      var expandIconRef = React.createRef();
+      var collapseIconRef = React.createRef();
+
+      var toggleFileBody = function(e) {
+        var fileBodyDiv = fileBodyRef.current;
+        var expandIcon = expandIconRef.current;
+        var collapseIcon = collapseIconRef.current;
+        if (fileBodyDiv.style.display === "none") {
+          fileBodyDiv.style.display = "block";
+          expandIcon.style.display = "block";
+          collapseIcon.style.display = "none";
+        } else {
+          fileBodyDiv.style.display = "none";
+          expandIcon.style.display = "none";
+          collapseIcon.style.display = "block";
+        }
+      };
+
       return (
         <div className="file" key={repo + "-file-" + index}>
           <div className="title">
             <a href={Model.UrlToRepo(repo, match.Filename, null, rev)}>
               {match.Filename}
             </a>
+            <button className="toggle-collapse-right" onClick={toggleFileBody}>
+              <span style={{}} className="octicon octicon-chevron-down" ref={expandIconRef}></span>
+              <span style={{ display: "hidden" }} className="octicon octicon-chevron-left toggle-hidden" ref={collapseIconRef}></span>
+            </button>
           </div>
-          <div className="file-body">
+          <div className="file-body" ref={fileBodyRef}>
             {matches}
           </div>
         </div>
